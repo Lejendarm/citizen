@@ -38,7 +38,6 @@ defmodule CitizenWeb do
       use Phoenix.HTML
 
       import CitizenWeb.Router.Helpers
-      import CitizenWeb.ErrorHelpers
       import CitizenWeb.Gettext
     end
   end

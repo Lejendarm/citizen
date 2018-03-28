@@ -22,6 +22,6 @@ defmodule CitizenWeb.Router do
   scope "/api", CitizenWeb do
     pipe_through :api
 
-    resources "/individuals", IndividualController, only: [:index]
+    resources "/individuals", IndividualController, only: [:index, :show, :create]
   end
 end
