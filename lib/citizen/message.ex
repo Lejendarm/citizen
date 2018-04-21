@@ -14,6 +14,6 @@ defmodule Citizen.Message do
   def changeset(message, attrs) do
     message
     |> cast(attrs, [:content])
-    |> validate_required([:content])
+    |> validate_required([:content, :individual_id])
   end
 end

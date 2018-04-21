@@ -23,5 +23,7 @@ defmodule CitizenWeb.Router do
     pipe_through :api
 
     resources "/individuals", IndividualController
+    resources "/containers", ContainerController
+    resources "/messages", MessageController
   end
 end

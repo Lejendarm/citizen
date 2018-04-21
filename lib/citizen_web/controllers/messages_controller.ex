@@ -1,29 +1,29 @@
-defmodule CitizenWeb.IndividualController do
+defmodule CitizenWeb.MessageController do
   use CitizenWeb, :controller
   alias Citizen.Repo
-  alias Citizen.Individual
+  alias Citizen.Message
 
   require Logger
 
   def index(conn, _params) do
-    individuals = Repo.all(Individual)
-    render(conn, "index.json", individuals: individuals)
+    messages = Repo.all(Message)
+    render(conn, "index.json", messages: messages)
   end
 
   def show(conn, %{"id" => id}) do
-    individual = Repo.get!(Individual, id);
-  	render(conn, "show.json", individual: individual)
+    message = Repo.get!(Message, id);
+  	render(conn, "show.json", message: message)
   end
 
-  def create(conn, %{"individual" => params}) do 
+  def create(conn, %{"message" => params}) do 
   	
-    changeset = Individual.changeset(%Individual{}, params)
+    changeset = Message.changeset(%Message{}, params)
 
   	case Repo.insert(changeset) do
-      {:ok, individual} ->
+      {:ok, message} ->
         conn
     		|> put_status(201)
-        |> render("show.json", individual: individual)
+        |> render("show.json", message: message)
       {:error, errors} ->
         conn
         |> put_status(422)
@@ -31,14 +31,14 @@ defmodule CitizenWeb.IndividualController do
   	end
   end
 
-  def update(conn, %{"id"=> id, "individual" => params}) do
+  def update(conn, %{"id"=> id, "message" => params}) do
 
-    individual = Repo.get!(Individual, id);
-    changeset = Individual.changeset(individual, params);
+    message = Repo.get!(Message, id);
+    changeset = Message.changeset(message, params);
 
     case Repo.update(changeset) do 
-      {:ok, individual} ->
-        render(conn, "show.json", individual: individual)
+      {:ok, message} ->
+        render(conn, "show.json", message: message)
       {:error, errors} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -47,9 +47,9 @@ defmodule CitizenWeb.IndividualController do
   end
 
   def delete(conn, %{"id" => id}) do
-    individual = Repo.get!(Individual, id);
+    message = Repo.get!(Message, id);
 
-    case Repo.delete(individual) do
+    case Repo.delete(message) do
       {:ok, _params} ->
         conn
         |> put_status(204)
