@@ -3,65 +3,62 @@ defmodule CitizenWeb.IndividualController do
   alias Citizen.Repo
   alias Citizen.Individual
 
+  require Logger
+
   def index(conn, _params) do
     individuals = Repo.all(Individual)
-    render(conn, "index.json", individuals)
+    render(conn, "index.json", individuals: individuals)
   end
 
   def show(conn, %{"id" => id}) do
-  	with {:ok, individual} <- Repo.get(Individual, id) do
-  		render(conn, "show.json", individual: individual)
-    else
-      nil ->
-        conn
-        |> put_status(404)
-        |> render(ErrorView, "404.json", error: "Not found")
-
-  	end
+    individual = Repo.get!(Individual, id);
+  	render(conn, "show.json", individual: individual)
   end
 
   def create(conn, params) do 
-  	changeset = Individual.changeset(%Individual{}, params)
+  	
+    changeset = Individual.changeset(%Individual{}, params)
 
-  	with {:ok, individual} <- Repo.insert(changeset) do
-      conn
-  		|> put_status(201)
-      |> render("show.json", individual: individual)
-    else
-      {:error, %{errors: errors}} ->
+  	case Repo.insert(changeset) do
+      {:ok, individual} ->
+        conn
+    		|> put_status(201)
+        |> render("show.json", individual: individual)
+      {:error, errors} ->
         conn
         |> put_status(422)
-        |> render(ErrorView, "422.json", %{errors: errors})
+        |> render(ErrorView, "422.json", errors: errors)
   	end
   end
 
-  def update(conn, params) do
-    changeset = Individual.changeset(%Individual{}, params)
+  def update(conn, %{"id"=> id, "individual" => params}) do
 
-    with {:ok, individual} <- Repo.update(Individual, changeset) do
-      conn
-      |> put_status(201)
-      |> render('show.json', individual: individual)
-    else
-      {:error, %{errors: errors}} ->
+    individual = Repo.get!(Individual, id);
+    changeset = Individual.changeset(individual, params);
+
+    case Repo.update(changeset) do 
+      {:ok, individual} ->
+        render(conn, "show.json", individual: individual)
+      {:error, errors} ->
         conn
-        |> put_status(422)
-        |> render(ErrorView, "422.json", %{errors: errors})
+        |> put_status(:unprocessable_entity)
+        |> render(ErrorView, "422.json", errors: errors)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    with individual = %Individual{} <- Repo.get(Individual, id) do
-      Repo.delete!(individual)
-      conn
-      |> put_status(204)
-      |> send_resp(:no_content, "")
-    else
-      nil ->
+    individual = Repo.get!(Individual, id);
+
+    case Repo.delete(individual) do
+      {:ok, _params} ->
         conn
-        |>  put_status(404)
-        |>  render(ErrorView, "404.json", error: "Not found")
-    end
+        |> put_status(204)
+        |> send_resp(:no_content, "")
+      {:error, _params} ->
+          conn
+          |>  put_status(404)
+          |>  render(ErrorView, "404.json", error: "Not found")
+      end
   end
 
 end
