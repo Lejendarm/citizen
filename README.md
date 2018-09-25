@@ -18,3 +18,42 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
   * Docs: https://hexdocs.pm/phoenix
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
+
+
+## Current task
+
+	* ContainerMessages Creation, error view issue
+
+## Todo
+
+	
+
+## Issues
+
+	* All name maybe in plurial
+
+## Done
+
+Entities :
+
+	* Container MVC
+		Container of entities, regroup a set of Individual, of Message, of Right on itself and of other containers
+
+	* Individual MVC
+		Person or Bot
+
+	* Message MVC
+		An ID A text
+
+	* Right MVC
+ 		Contains all possible rights than can be used
+
+Relations :
+	
+	* Container > all M
+
+		Allow all container relations
+
+	* Interference M
+
+		Allow a container to have rights on another container

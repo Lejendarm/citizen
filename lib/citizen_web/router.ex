@@ -25,5 +25,8 @@ defmodule CitizenWeb.Router do
     resources "/individuals", IndividualController
     resources "/containers", ContainerController
     resources "/messages", MessageController
+
+    resources "/containers/:container_id/messages", ContainerMessagesController
+
   end
 end

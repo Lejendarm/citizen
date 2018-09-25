@@ -5,12 +5,23 @@ defmodule CitizenWeb.IndividualController do
 
   require Logger
 
-  def index(conn, _params) do
+  def index(conn, params) do
+
+
+    Logger.info  "Logging this text!"
+    Logger.debug "Var value: #{inspect(params)}"
+    
+
     individuals = Repo.all(Individual)
     render(conn, "index.json", individuals: individuals)
   end
 
   def show(conn, %{"id" => id}) do
+
+    Logger.info  "Logging this text!"
+    Logger.debug "Var value: #{inspect(id)}"
+    
+
     individual = Repo.get!(Individual, id);
   	render(conn, "show.json", individual: individual)
   end

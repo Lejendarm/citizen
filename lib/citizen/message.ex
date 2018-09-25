@@ -2,10 +2,9 @@ defmodule Citizen.Message do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "messages" do
-    field :content, :string
-    field :individual_id, :id
+    field(:content, :string)
+    field(:individual_id, :id)
 
     timestamps()
   end
@@ -13,7 +12,7 @@ defmodule Citizen.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:content])
-    |> validate_required([:content, :individual_id])
+    |> cast(attrs, [:individual_id, :content])
+    |> validate_required([:individual_id, :content])
   end
 end

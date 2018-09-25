@@ -11,34 +11,34 @@ defmodule CitizenWeb.MessageController do
   end
 
   def show(conn, %{"id" => id}) do
-    message = Repo.get!(Message, id);
-  	render(conn, "show.json", message: message)
+    message = Repo.get!(Message, id)
+    render(conn, "show.json", message: message)
   end
 
-  def create(conn, %{"message" => params}) do 
-  	
+  def create(conn, %{"message" => params}) do
     changeset = Message.changeset(%Message{}, params)
 
-  	case Repo.insert(changeset) do
+    case Repo.insert(changeset) do
       {:ok, message} ->
         conn
-    		|> put_status(201)
+        |> put_status(201)
         |> render("show.json", message: message)
+
       {:error, errors} ->
         conn
         |> put_status(422)
         |> render(ErrorView, "422.json", errors: errors)
-  	end
+    end
   end
 
-  def update(conn, %{"id"=> id, "message" => params}) do
+  def update(conn, %{"id" => id, "message" => params}) do
+    message = Repo.get!(Message, id)
+    changeset = Message.changeset(message, params)
 
-    message = Repo.get!(Message, id);
-    changeset = Message.changeset(message, params);
-
-    case Repo.update(changeset) do 
+    case Repo.update(changeset) do
       {:ok, message} ->
         render(conn, "show.json", message: message)
+
       {:error, errors} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -47,18 +47,18 @@ defmodule CitizenWeb.MessageController do
   end
 
   def delete(conn, %{"id" => id}) do
-    message = Repo.get!(Message, id);
+    message = Repo.get!(Message, id)
 
     case Repo.delete(message) do
       {:ok, _params} ->
         conn
         |> put_status(204)
         |> send_resp(:no_content, "")
-      {:error, _params} ->
-          conn
-          |>  put_status(404)
-          |>  render(ErrorView, "404.json", error: "Not found")
-      end
-  end
 
+      {:error, _params} ->
+        conn
+        |> put_status(404)
+        |> render(ErrorView, "404.json", error: "Not found")
+    end
+  end
 end
